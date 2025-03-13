@@ -1,5 +1,7 @@
 #define _USE_MATH_DEFINES
 #include "ParticleSystem.h"
+#include <chrono>
+#include <iostream>
 
 void ParticleSystem::SpawnParticle()
 {
@@ -8,13 +10,17 @@ void ParticleSystem::SpawnParticle()
 	float speed = mStartingSize * (1.0f + (std::rand() / (float)RAND_MAX)) * 0.5f;
 	vec2 startVelocity(sin(angle) * speed, cos(angle) * speed);
 
-	ParticleSprite* pNewParticle = new ParticleSprite(mSpawnPosition + (startVelocity * 0.1f), startVelocity, startSize, mStartingColour, mParticleDuration, 0);
-	return this->mParticles.push_back(pNewParticle);
+	ParticleSprite newParticle(mSpawnPosition + (startVelocity * 0.1f), startVelocity, startSize, mStartingColour, mParticleDuration, 0);
+	mParticles.addItem(newParticle);
 
 }
 
 void ParticleSystem::Update(float deltaTime)
 {
+	mNumberUpdates++; //used for checking how many times update is called
+	auto start = std::chrono::high_resolution_clock::now(); //stores the value of the system clock at the start of update
+
+
 	//check if it is time to spawn another particle
 	mSpawnTimer -= deltaTime;
 	while (mSpawnTimer < 0)
@@ -23,10 +29,12 @@ void ParticleSystem::Update(float deltaTime)
 		SpawnParticle();
 	}
 
+	int updatecount = 0;
 	//update all the particles
 	for (ParticleSprite* particle : mParticles)
 	{
 		particle->Update(deltaTime, { 0,0,0,-0.01 * deltaTime }, { deltaTime * 10, deltaTime* 10 }, { 0,0 }, 0.001f);
+		updatecount++;
 	}
 
 	//check for particles that need to be YEETED (deleted)
@@ -34,10 +42,14 @@ void ParticleSystem::Update(float deltaTime)
 	{
 		if (!(*i)->isActive())
 		{
-			delete(*i);
 			i = mParticles.erase(i);
 		}
 	}
+
+	auto end = std::chrono::high_resolution_clock::now();
+	auto duration = end - start;
+	mAverage = (mAverage * (mNumberUpdates - 1) + duration.count()) / (double)mNumberUpdates;
+	std::cout << "Number Particles: " << updatecount << ", Update took: " << mAverage << "\n";
 }
 
 void ParticleSystem::Draw(aie::Renderer2D* renderer)

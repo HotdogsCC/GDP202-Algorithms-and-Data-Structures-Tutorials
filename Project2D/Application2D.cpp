@@ -4,6 +4,13 @@
 #include "Input.h"
 
 Application2D::Application2D() {
+	m_2dRenderer = nullptr;
+	m_amongUsTexture = nullptr;
+	m_font = nullptr;
+	m_particleSystem = nullptr;
+	m_shipTexture = nullptr;
+	m_texture = nullptr;
+	m_timer = 0.0f;
 
 }
 
@@ -94,7 +101,7 @@ void Application2D::draw() {
 
 	// draw a moving purple circle
 	m_2dRenderer->setRenderColour(1, 0, 1, 1);
-	m_2dRenderer->drawCircle(sin(m_timer) * 100 + 600, 150, 50);
+	m_2dRenderer->drawCircle((float)sin(m_timer) * 100 + 600, 150, 50);
 
 	// draw a rotating red box
 	m_2dRenderer->setRenderColour(1, 0, 0, 1);

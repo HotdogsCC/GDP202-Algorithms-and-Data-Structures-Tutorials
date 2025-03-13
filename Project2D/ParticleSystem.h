@@ -5,6 +5,7 @@
 #include <vector>
 #include "glm/vec2.hpp"
 #include "glm/vec4.hpp"
+#include "DynamicClass.h"
 
 using namespace glm;
 using namespace std;
@@ -49,8 +50,10 @@ class ParticleSystem
 	float mParticleDuration;
 	float mSpawnRate;
 	float mSpawnTimer;
+	int mNumberUpdates;
+	double mAverage;
 	aie::Texture* mTexture;
-	vector<ParticleSprite*> mParticles;
+	DynamicClass<ParticleSprite> mParticles;
 
 	void SpawnParticle();
 	
@@ -67,13 +70,15 @@ public:
 	{
 		mNumberParticles = NumberParticles;
 		mSpawnPosition = SpawnPosition;
-		mStartingSpeed - StartingSpeed;
+		mStartingSpeed = StartingSpeed;
 		mStartingSize = StartingSize;
 		mStartingColour = StartingColour;
 		mParticleDuration = ParticleDuration;
 		mTexture = Texture;
 		mSpawnRate = ParticleDuration / (float)NumberParticles;
 		mSpawnTimer = 0.0f;
+		mAverage = 0.0f;
+		mNumberUpdates = 0;
 	}
 
 	void Update(float deltaTime);
