@@ -174,11 +174,13 @@
     <ClCompile Include="Application2D.cpp" />
     <ClCompile Include="DynamicClass.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MemoryPool.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application2D.h" />
     <ClInclude Include="DynamicClass.h" />
+    <ClInclude Include="MemoryPool.h" />
     <ClInclude Include="ParticleSystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

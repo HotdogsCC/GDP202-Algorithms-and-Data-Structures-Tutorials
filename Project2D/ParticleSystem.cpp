@@ -35,20 +35,24 @@ void ParticleSystem::Update(float deltaTime)
 	{
 		particle->Update(deltaTime, { 0,0,0,-0.01 * deltaTime }, { deltaTime * 10, deltaTime* 10 }, { 0,0 }, 0.001f);
 		updatecount++;
-	}
-
-	//check for particles that need to be YEETED (deleted)
-	for (auto i = mParticles.begin(); i < mParticles.end(); i++)
-	{
-		if (!(*i)->isActive())
+		if (!particle->isActive())
 		{
-			i = mParticles.erase(i);
+			mParticles.erase(particle);
 		}
 	}
 
+	//check for particles that need to be YEETED (deleted)
+	//for (auto i = mParticles.begin(); i < mParticles.end(); i++)
+	//{
+	//	if (!(*i)->isActive())
+	//	{
+	//		i = mParticles.erase(i);
+	//	}
+	//}
+
 	auto end = std::chrono::high_resolution_clock::now();
 	auto duration = end - start;
-	mAverage = (mAverage * (mNumberUpdates - 1) + duration.count()) / (double)mNumberUpdates;
+	mAverage = (mAverage * ((double)mNumberUpdates - 1) + (double)duration.count()) / (double)mNumberUpdates;
 	std::cout << "Number Particles: " << updatecount << ", Update took: " << mAverage << "\n";
 }
 
@@ -86,4 +90,14 @@ void ParticleSprite::Draw(aie::Renderer2D* const m_2dRenderer, aie::Texture* tex
 bool ParticleSprite::isActive()
 {
 	return (mTime > 0) && (mColour.a > 0);
+}
+
+ParticleSprite::ParticleSprite()
+{
+	mColour = { 0, 0, 0, 0 };
+	mPosition = { 0, 0 };
+	mRotation = 0;
+	mSize = { 0, 0 };
+	mTime = 0;
+	mVelocity = { 0, 0 };
 }

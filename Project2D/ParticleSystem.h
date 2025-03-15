@@ -6,6 +6,7 @@
 #include "glm/vec2.hpp"
 #include "glm/vec4.hpp"
 #include "DynamicClass.h"
+#include "MemoryPool.h"
 
 using namespace glm;
 using namespace std;
@@ -34,6 +35,7 @@ public:
 		mTime = TimeLeft;
 		mRotation = Rotation;
 	}
+	ParticleSprite();
 
 	void Draw(aie::Renderer2D* const m_2dRenderer, aie::Texture* texture);
 	void Update(const float deltaTime, const vec4& colourDelta, const vec2& velocityDelta, const vec2& sizeDelta, const float rotationDelta);
@@ -53,7 +55,8 @@ class ParticleSystem
 	int mNumberUpdates;
 	double mAverage;
 	aie::Texture* mTexture;
-	DynamicClass<ParticleSprite> mParticles;
+	//DynamicClass<ParticleSprite> mParticles;
+	MemoryPool<ParticleSprite, 100> mParticles;
 
 	void SpawnParticle();
 	
