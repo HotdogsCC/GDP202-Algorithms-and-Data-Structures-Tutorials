@@ -39,7 +39,7 @@ public:
         // checks if they are the same
         if (this == &other)
         {
-            return;
+            return this;
         }
 
         // deep copy the data in other to this
@@ -146,7 +146,7 @@ public:
     {
         if (this == &other)
         {
-            return;
+            return this;
         }
 
         front = other.front;
@@ -170,9 +170,86 @@ public:
     }
 
     // util function to return the size of the queue
-    int Size()
+    int Size() const
     {
         return count;
+    }
+
+    // util function to check if the queue is empty or not
+    bool IsEmpty() const
+    {
+        return (count == 0);
+    }
+
+
+    //util function to check if the queue is full or not
+    bool IsFull() const
+    {
+        return (count == capacity);
+    }
+
+    // add an item to the rear of the queue
+    void EnQueue(T newItem)
+    {
+        // check the queue isn't full
+        assert(!IsFull());
+
+        std::cout << "Inserting: " << newItem << "\n";
+
+        //move the rear pointer and wrap at capacity
+        rear = (rear + 1) % capacity;
+
+        // add our new item
+        pData[rear] = newItem;
+
+        //increase count
+        count++;
+    }
+
+    // get item from front of the queue
+    T DeQueue()
+    {
+        //check queue isnt empty
+        assert(!IsEmpty());
+
+        //get the data
+        T x = pData[front];
+        std::cout << "Remove " << x << "\n";
+
+        // move the index and wrap at capacity
+        front = (front + 1) % capacity;
+
+        // decrement the count of elements in the queue
+        count--;
+        return x;
+    }
+
+    //returns the current alye at the front without changing the pointer
+    T Peek() const
+    {
+        assert(!IsEmpty());
+
+        return pData[front];
+    }
+
+    //debug function so we can see what's in the queue whilst testing
+    void Debug()
+    {
+        if(IsEmpty())
+        {
+            std::cout << "Queue empty\n";
+            return;
+        }
+        std::cout << "Queue contents: ";
+        int index = front; //start with the element at the front
+        //display all the items in the queue
+        for (int i = 0; i < count; i++)
+        {
+            std::cout << pData[index] << " ";
+            //bump index and wrap
+            index = (index + 1) % capacity;
+        }
+        std::cout << "\n";
     }
 
 
