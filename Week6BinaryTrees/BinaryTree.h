@@ -17,6 +17,7 @@ private:
             pLeft = nullptr;
             pRight = nullptr;
         }
+        
         // member functions to get and set the payload
         T GetPayload() const { return payload; }
         void SetPayLoad(T _payload) { payload = _payload; }
@@ -25,7 +26,9 @@ private:
         Node** GetRightPtr() { return &pRight; }
         Node** GetLeftPtr() { return &pLeft; }
         // member functions to pointers to the left and right trees
+        void SetRight(const Node* pointer) { pRight = pointer; }
         Node* GetRight() { return pRight; }
+        void SetLeft(const Node* pointer) { pLeft = pointer; }
         Node* GetLeft() { return pLeft; }
 
         void SetLeftPtr(Node** pointer) { pLeft = *pointer; }
@@ -67,6 +70,30 @@ public:
     BinaryTree()
     {
         pHead = nullptr;
+    }
+    // copy constructor
+    BinaryTree(const BinaryTree& other)
+    {
+        if(other.pHead != nullptr)
+        {
+            pHead = copyTree(other.pHead);
+        }
+    }
+    Node* copyTree(Node* pRoot)
+    {
+        // if this edge is not null, instantiate a new node and copy the payload
+        Node* newNode = new Node(pRoot->GetPayload());
+        // follow the left child
+        if(pRoot->GetLeft() != nullptr)
+        {
+            newNode->SetLeft(copyTree(pRoot->GetLeft()));
+        }
+        //follow the right child
+        if(pRoot->GetRight() != nullptr)
+        {
+            newNode->SetRight(copyTree(pRoot->GetRight()));
+        }
+        return newNode;
     }
 
     T GetHead()
@@ -164,5 +191,44 @@ public:
         return true;
 
     }
+
+    void getCanonicalRepresentation(unsigned int& maxSize,unsigned int& size, T*& pData)
+    {
+        size = 0;
+        maxSize = 0;
+        pData = nullptr;
+        if (pHead == nullptr) return;
+
+        int sizeOfTree = WalkTree(false);
+        // find nearest power of two bigger than sizeoftree;
+        double dW = log2(sizeOfTree);
+        int iW = (int)ceil(dW);
+        maxSize = (int)pow(iW, 2);
+        // reserve enough memory for a balanced tree
+        pData = new T[maxSize];
+        memset(pData, 0, maxSize * sizeof(T));
+        ReBalanceTree(); // make sure the tree is balanced before we start
+        std::queue<Node*> nodesToProcess;
+        int index = 0;
+        T* pDest = pData;
+        nodesToProcess.push(pHead);
+        while (!nodesToProcess.empty())
+        {
+            Node* pThisNode = nodesToProcess.front();
+            nodesToProcess.pop();
+            T payLoad = pThisNode->GetPayload();
+            *pDest++ = pThisNode->GetPayload();
+            size++;
+            if (pThisNode->GetLeft() != nullptr)
+            {
+                nodesToProcess.push(pThisNode->GetLeft());
+            }
+            if (pThisNode->GetRight() != nullptr)
+            {
+                nodesToProcess.push(pThisNode->GetRight());
+            }
+        }
+    }
+
 
 };;
