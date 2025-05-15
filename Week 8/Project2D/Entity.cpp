@@ -150,13 +150,10 @@ void Particle::doPartlicleSpatialIndexCollision(float delta)
 	for (int cellIndex = 0; cellIndex < numberCellsOverlaped; cellIndex++)
 	{
 		Entity* pEntity = cellsOverlapped[cellIndex];
-		int deep = 0;
 		while (pEntity != nullptr)
 		{
-			std::cout << "testing against circle "<< deep++ << "\n";
 			if (pEntity->Colliding(circleCollider))
 			{
-				std::cout << "yoooo" << "\n";
 				// If this entitiy is colliding with another entity in this cell
 				vec2 collisionVector;
 				pEntity->getCollisionData(circleCollider, collisionVector);

@@ -75,9 +75,9 @@ void Application2D::DeleteParticles()
 bool Application2D::ResetParticleSimulation()
 {
 	iFrameCountForTest = 0;
-	iTargetNumberParticles = 400;
-	iSpatialIndexResX = 4;
-	iSpatialIndexResY = 4;
+	iTargetNumberParticles = 1500;
+	iSpatialIndexResX = 32;
+	iSpatialIndexResY = 32;
 	DeleteParticles();  // Delete all the particles from the previous run
 	AddParticles(iTargetNumberParticles, iSpatialIndexResX, iSpatialIndexResY);
 	return true;

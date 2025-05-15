@@ -165,8 +165,8 @@ ivec2 SpatialIndex::getGridIndex(vec2 pos)
 Entity* SpatialIndex::getCell(Entity* pEntity)
 {
 	ivec2 gridCoord = getGridIndex(pEntity->GetPos());
-
-	return pEntity;
+	return *(pEntities + (gridCoord.y * iXResolution) + gridCoord.x);
+	//return pEntity;
 
 	//return nullptr;
 }
@@ -211,26 +211,16 @@ int SpatialIndex::getCells(Entity* pEntity, float radius, Entity* cells[])
 void SpatialIndex::add(Entity* pEntity)
 {
 	ivec2 gridCoord = getGridIndex(pEntity->GetPos());
-	Entity* pInsertionpoint = getCell(pEntity);
-
-	if (pInsertionpoint != nullptr)
+	Entity** pInsertionPoint = pEntities + (gridCoord.y * iXResolution) + gridCoord.x;
+	if (*pInsertionPoint != nullptr)
 	{
-		Entity* pEntityDownTheChain = pInsertionpoint;
-		while (pEntityDownTheChain->nextInChain != nullptr)
-		{
-			pEntityDownTheChain = pEntityDownTheChain->nextInChain;
-		}
-		pInsertionpoint = pEntityDownTheChain;
-		pEntityDownTheChain->nextInChain = nullptr;
+		pEntity->nextInChain = *pInsertionPoint;
 	}
 	else
 	{
-		pInsertionpoint = pEntity;
 		pEntity->nextInChain = nullptr;
 	}
-	
-
-	pEntities[gridCoord.x, gridCoord.y] = pInsertionpoint;
+	*pInsertionPoint = pEntity;
 
 }
 
