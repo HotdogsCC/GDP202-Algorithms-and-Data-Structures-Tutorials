@@ -30,8 +30,8 @@ protected:
 	aie::Texture*		pParticleTexture = nullptr;;
 	aie::Font*			pFont = nullptr;;
 	SpatialIndex*		pSpatialIndex = nullptr;
-	unsigned int		iSpatialIndexResX = 0;
-	unsigned int		iSpatialIndexResY = 0;
+	unsigned int		iSpatialIndexResX = 2;
+	unsigned int		iSpatialIndexResY = 2;
 	float m_timer;
 private:
 	int iNumberParticles = 0;

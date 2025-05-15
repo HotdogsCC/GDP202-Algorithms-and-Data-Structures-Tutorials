@@ -20,6 +20,12 @@ protected:
 	float fRotation;
 	aie::Texture* pTexture;
 public:
+	Entity()
+	{
+		v2Pos = { 0, 0 };
+		fRotation = 0;
+		pTexture = nullptr;
+	}
 	Entity(vec2 v2Pos, float fRotation, aie::Texture* pTexture) : v2Pos(v2Pos), fRotation(fRotation), pTexture(pTexture), nextInChain(nullptr)
 	{
 	}

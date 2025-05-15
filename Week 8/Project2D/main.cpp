@@ -1,7 +1,9 @@
 #include "Application2D.h"
+#include <iostream>
 
 int main() {
-	
+
+
 	// allocation
 	auto app = new Application2D();
 
