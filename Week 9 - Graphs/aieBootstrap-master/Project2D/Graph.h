@@ -1,5 +1,9 @@
 ﻿#pragma once
-#include <glm/detail/type_vec.hpp>
+#include <glm/vec2.hpp>
+#include <vector>
+
+class Node;
+class Edge;
 
 namespace aie
 {
@@ -18,5 +22,52 @@ public:
 
 class GraphEdgeAdjacencyEdgeImplementation : public Graph
 {
+    std::vector<Node*> nodes;
+public:
+    GraphEdgeAdjacencyEdgeImplementation() {}
+    ~GraphEdgeAdjacencyEdgeImplementation();
+    virtual void AddNode(int label, glm::vec2 v2Pos);
+    virtual void AddEdge(unsigned int startIndex, unsigned int endIndex, float fCost);
+    virtual void debugDrawGraph(aie::Renderer2D* renderer, aie::Font* pFont);
     
+};
+
+
+
+class Edge
+{
+    float fCost; //cost of traversing along this edge
+    Node* pStart;
+    Node* pEnd;
+
+public:
+    Edge(Node* pStart, Node* pEnd, float fCost) : pEnd(pEnd), pStart(pStart), fCost(fCost) {};
+    void DebugDraw(aie::Renderer2D* pRenderer, aie::Font* pFont) const;
+    float GetConst() const { return fCost; }
+    Node* GetEnd() const { return pEnd; }
+    Node* GetStart() const { return pStart; }
+};
+
+class Node
+{
+    //the value of this node
+    const int payload;
+    //position of the node on the screen
+    glm::vec2 v2Pos = { 0, 0 };
+    // List of edges which this node connect to
+    std::vector<const Edge*> edges;
+
+    //radius of the node
+    float nodeRadius = 50.0f;
+
+public:
+    Node(const int payload, glm::vec2 v2Pos) : payload(payload), v2Pos(v2Pos) {}
+    ~Node();
+    const glm::vec2 GetPos() { return v2Pos; }
+    const int GetPayload() { return payload; }
+    void AddEdge(const Edge* edge);
+    const std::vector<const Edge*>& GetEdges() { return edges; }
+    void DebugDraw(aie::Renderer2D* pRenderer, aie::Font* pFont);
+    const float GetNodeRadius() { return nodeRadius; }
+
 };
