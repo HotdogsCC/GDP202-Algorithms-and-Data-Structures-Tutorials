@@ -128,4 +128,25 @@ void GraphEdgeAdjacencyEdgeImplementation::debugDrawGraph(aie::Renderer2D* rende
 	}
 }
 
+bool GraphEdgeAdjacencyEdgeImplementation::DepthFirstSearch(
+	const unsigned int startIndex, const unsigned int endIndex, bool bStartSearch)
+{
+	assert(startIndex < nodes.size() && endIndex < nodes.size());
+	if(bStartSearch)
+	{
+		visited.clear();
+		toVisitStack = {};
+		toVisitStack.push(nodes[startIndex]);
+		std::cout << "Depth First Search, starting from: ";
+
+		while(!toVisitStack.empty())
+		{
+			// add the next node to the visited list, so we don't push it again
+			Node* pNextNode = toVisitStack.top(); //gets a copy from the top of the stack
+			toVisitStack.pop(); // pop the node of the stack
+			//set the nodes visited flag to it changes colour for debug
+			//pNextNode->SetVisited(true);
+		}
+	}
+}
 

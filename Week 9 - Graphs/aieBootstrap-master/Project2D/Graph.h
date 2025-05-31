@@ -1,4 +1,6 @@
 ﻿#pragma once
+#include <queue>
+#include <stack>
 #include <glm/vec2.hpp>
 #include <vector>
 
@@ -17,18 +19,26 @@ public:
     virtual void AddNode(int label, glm::vec2 vec2pos) = 0;
     virtual void AddEdge(unsigned int startIndex, unsigned int endIndex, float fCost) = 0;
     virtual void debugDrawGraph(aie::Renderer2D* renderer, aie::Font* pFont) = 0;
+    virtual bool DepthFirstSearch(
+        const unsigned int startIndex,
+        const unsigned int endIndex,
+        bool bStartSearch) = 0;
     
 };
 
 class GraphEdgeAdjacencyEdgeImplementation : public Graph
 {
     std::vector<Node*> nodes;
+    std::stack<Node*> toVisitStack;
+    std::queue<Node*> visitedQueue;
+    std::vector<Node*> visited;
 public:
-    GraphEdgeAdjacencyEdgeImplementation() {}
+    GraphEdgeAdjacencyEdgeImplementation() = default;
     ~GraphEdgeAdjacencyEdgeImplementation();
-    virtual void AddNode(int label, glm::vec2 v2Pos);
-    virtual void AddEdge(unsigned int startIndex, unsigned int endIndex, float fCost);
-    virtual void debugDrawGraph(aie::Renderer2D* renderer, aie::Font* pFont);
+    virtual void AddNode(int label, glm::vec2 v2Pos) override;
+    virtual void AddEdge(unsigned int startIndex, unsigned int endIndex, float fCost) override;
+    virtual void debugDrawGraph(aie::Renderer2D* renderer, aie::Font* pFont) override;
+    virtual bool DepthFirstSearch(const unsigned int startIndex, const unsigned int endIndex, bool bStartSearch) override;
     
 };
 
