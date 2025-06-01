@@ -27,4 +27,7 @@ protected:
 	float m_timer;
 
 	Graph* pGraph;
+
+private:
+	int gSearchCount = 0;
 };

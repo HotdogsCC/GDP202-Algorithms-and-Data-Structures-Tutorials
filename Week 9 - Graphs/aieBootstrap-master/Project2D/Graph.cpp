@@ -72,6 +72,10 @@ void Node::DebugDraw(aie::Renderer2D* pRenderer, aie::Font* pFont)
 
 	//draws the circle of the node
 	pRenderer->setRenderColour(0, 0, 1, 1);
+	if(bVisited)
+	{
+		pRenderer->setRenderColour(0, 0, 0.5f, 1);
+	}
 	pRenderer->drawCircle(position.x, position.y, GetNodeRadius());
 
 	//draws text
@@ -138,15 +142,46 @@ bool GraphEdgeAdjacencyEdgeImplementation::DepthFirstSearch(
 		toVisitStack = {};
 		toVisitStack.push(nodes[startIndex]);
 		std::cout << "Depth First Search, starting from: ";
+	}
 
-		while(!toVisitStack.empty())
+	while(!toVisitStack.empty())
+	{
+		// add the next node to the visited list, so we don't push it again
+		Node* pNextNode = toVisitStack.top(); //gets a copy from the top of the stack
+		toVisitStack.pop(); // pop the node of the stack
+		//set the nodes visited flag to it changes colour for debug
+		pNextNode->SetVisited(true);
+
+		//checks if we reached where we need to go
+		if(pNextNode == nodes[endIndex])
 		{
-			// add the next node to the visited list, so we don't push it again
-			Node* pNextNode = toVisitStack.top(); //gets a copy from the top of the stack
-			toVisitStack.pop(); // pop the node of the stack
-			//set the nodes visited flag to it changes colour for debug
-			//pNextNode->SetVisited(true);
+			std::cout << "Destination Node Reached\n";
+			return true;
+		}
+
+		//otherwise
+		//check if node is not in the visited list
+		if(std::find(visited.begin(), visited.end(), pNextNode) == visited.end())
+		{
+			visited.push_back(pNextNode); //add node to visited list
+			{
+				std::cout << pNextNode->GetPayload() << ", ";
+				// iterate over all the nodes edges adding the connected nodes to the stack
+				for (auto pEdge : pNextNode->GetEdges())
+				{
+					toVisitStack.push(pEdge->GetEnd());
+				}
+				return false;
+			}
 		}
 	}
+
+	std::cout << "destination  node unreachable \n";
+	return true;
+}
+
+void Node::SetVisited(bool bInput)
+{
+	bVisited = bInput;
 }
 

@@ -79,6 +79,14 @@ void Application2D::update(float deltaTime) {
 	// exit the application
 	if (input->isKeyDown(aie::INPUT_KEY_ESCAPE))
 		quit();
+
+	unsigned int searchStartIndex = 0;
+	unsigned int searchEndIndex = 3;
+	if(input->wasKeyPressed(aie::INPUT_KEY_SPACE))
+	{
+		pGraph->DepthFirstSearch(searchStartIndex, searchEndIndex, gSearchCount == 0);
+		gSearchCount++;
+	}
 }
 
 void Application2D::draw() {

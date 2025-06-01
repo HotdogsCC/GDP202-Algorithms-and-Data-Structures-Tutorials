@@ -67,6 +67,9 @@ class Node
     // List of edges which this node connect to
     std::vector<const Edge*> edges;
 
+    // debug purposes, whether this is visited
+    bool bVisited = false;
+
     //radius of the node
     float nodeRadius = 50.0f;
 
@@ -79,5 +82,7 @@ public:
     const std::vector<const Edge*>& GetEdges() { return edges; }
     void DebugDraw(aie::Renderer2D* pRenderer, aie::Font* pFont);
     const float GetNodeRadius() { return nodeRadius; }
+
+    void SetVisited(bool bInput);
 
 };
